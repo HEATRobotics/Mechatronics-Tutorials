@@ -29,22 +29,7 @@ RUN groupadd --gid "${USER_GID}" "${USERNAME}" \
 
 WORKDIR ${T_REPO}
 
-# Cache dependency installation and validate an initial build. Copy only source
-# packages so host-generated build/install/log artifacts never enter the image.
-COPY --chown=${USER_UID}:${USER_GID} ros2-gripper-bot/gb_ws/src/ ${T_GB_WS}/src/
-RUN apt-get update \
-    && source /opt/ros/${ROS_DISTRO}/setup.bash \
-    && if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then rosdep init; fi \
-    && rosdep update \
-    && rosdep install --from-paths ${T_GB_WS}/src --ignore-src -r -y \
-    && cd ${T_GB_WS} \
-    && colcon build --symlink-install \
-    && chown -R "${USER_UID}:${USER_GID}" ${T_GB_WS}
-
 COPY docker/tutorials-entrypoint.sh /tutorials-entrypoint.sh
-RUN chmod +x /tutorials-entrypoint.sh \
-    && printf '\n# Load ROS 2 and the EMBR physical workspace in interactive shells.\nsource /opt/ros/${ROS_DISTRO}/setup.bash\nif [ -f "${T_GB_WS}/install/setup.bash" ]; then\n    source "${T_GB_WS}/install/setup.bash"\nfi\n' >> /home/${USERNAME}/.bashrc \
-    && chown ${USER_UID}:${USER_GID} /home/${USERNAME}/.bashrc
 
 USER ${USERNAME}
 ENTRYPOINT ["/tutorials-entrypoint.sh"]
