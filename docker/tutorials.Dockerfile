@@ -12,7 +12,6 @@ ARG USER_GID=1000
 
 ENV HOME=/home/${USERNAME} \
     T_REPO=/home/${USERNAME}/Mechatronics-Tutorials \
-    T_GB_WS=/home/${USERNAME}/Mechatronics-Tutorials/ros2-gripper-bot/gb_ws \
     ROS_HOME=/tmp/ros
 
 COPY Tools/environment/ubuntu-packages.txt /tmp/ubuntu-packages.txt
@@ -30,6 +29,7 @@ RUN groupadd --gid "${USER_GID}" "${USERNAME}" \
 WORKDIR ${T_REPO}
 
 COPY docker/tutorials-entrypoint.sh /tutorials-entrypoint.sh
+RUN chmod 755 /tutorials-entrypoint.sh
 
 USER ${USERNAME}
 ENTRYPOINT ["/tutorials-entrypoint.sh"]

@@ -19,7 +19,6 @@ services:
       - ROS_DOMAIN_ID=0
       - ROS_HOME=/tmp/ros
       - T_REPO=/home/${CONTAINER_USER:-stud}/Mechatronics-Tutorials
-      - T_GB_WS=/home/${CONTAINER_USER:-stud}/Mechatronics-Tutorials/ros2-gripper-bot/gb_ws
       - DISPLAY=${DISPLAY:-host.docker.internal:0.0}
       - QT_QPA_PLATFORM=xcb
       - QT_X11_NO_MITSHM=1
