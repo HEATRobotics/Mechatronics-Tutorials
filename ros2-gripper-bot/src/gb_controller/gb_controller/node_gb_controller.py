@@ -18,11 +18,14 @@ class GripperBotController(Node):
         self.declare_parameter("rotate_step", 0.1)
         self.declare_parameter("actuate_step", 0.1)
         self.declare_parameter("pinch_status", False)
+        self.declare_parameter("poll_period", 0.01)
 
         self._vel_step     = float(self.get_parameter("vel_step").value)
         self._rotate_step   = float(self.get_parameter("rotate_step").value)
         self._actuate_step  = float(self.get_parameter("actuate_step").value)
         self._pinch_status = bool(self.get_parameter("pinch_status").value)
+
+        poll_period = float(self.get_parameter("poll_period").value)
 
         self._vel_forward = 0.0
         self._vel_turn = 0.0
@@ -37,6 +40,16 @@ class GripperBotController(Node):
 
         self._arm_publisher = self.create_publisher(
             GbArm, "arm_cmd", 10
+        )
+
+        self._configure_terminal()
+        self._timer = self.create_timer(poll_period, self._poll_terminal)
+        self._publish_termi_command()
+        self.get_logger().info(
+            "Simulation teleoperation started: "
+            "Car: W/S forward, A/D turn, "
+            "Arm: I/K actuate, J/L rotate, _ pinch"
+            "r reset, Q quit"
         )
 
     def _configure_terminal(self) -> None:
@@ -87,35 +100,51 @@ class GripperBotController(Node):
             elif key == "d":
                 self._vel_turn = min(1.0, self._vel_turn + self._vel_step)
             elif key == "i":
-                self._arm_join1 = min(1.0, self._arm_join1 + self.actuate_step)
+                self._arm_join1 = min(1.0, self._arm_join1 + self._actuate_step)
             elif key == "k":
-                self._arm_join1 = max(-1.0, self._arm_join1 - self.actuate_step)
+                self._arm_join1 = max(-1.0, self._arm_join1 - self._actuate_step)
             elif key == "j":
-                self._arm_rotate = max(-1.0, self._arm_rotate - self.actuate_step)
+                self._arm_rotate = max(-1.0, self._arm_rotate - self._rotate_step)
             elif key == "l":
-                self._arm_rotate = min(1.0, self._arm_rotate + self.actuate_step)
+                self._arm_rotate = min(1.0, self._arm_rotate + self._rotate_step)
             elif key == " ":
                 self._pinch_status = not self._pinch_status
+            elif key == "r":
+                self._vel_forward = 0.0
+                self._vel_turn = 0.0
+                self._arm_rotate = 0.0
+                self._arm_rotate = 0.0
+                self._pinch_status = False
             elif key == "q":
                 self._vel_forward = 0.0
                 self._vel_turn = 0.0
                 self._arm_rotate = 0.0
                 self._arm_rotate = 0.0
                 self._pinch_status = False
-                self._vel_publisher()
-                self._arm_publisher()
                 rclpy.shutdown()
                 return
             else:
                 continue
-            # Call in loop in order to not flood the terminal
-            self._vel_publisher()
-            self._arm_publisher()
+            self._publish_termi_command()
         self._publish(vel=self._vel_forward,
                         turn=self._vel_turn, 
                         actuate=self._arm_join1, 
                         rotate=self._arm_rotate, 
                         pinch=self._pinch_status)
+
+    def _publish_termi_command(self) -> None:
+        self._publish(vel=self._vel_forward,
+                                turn=self._vel_turn, 
+                                actuate=self._arm_join1, 
+                                rotate=self._arm_rotate, 
+                                pinch=self._pinch_status)
+                
+        self.get_logger().info(
+            f"command: forward={self._vel_forward:+.1f}, "
+            f"turn={self._vel_turn:+.1f}, "
+            f"actuate={self._arm_join1}, "
+            f"rotate={self._arm_rotate}, pinch={self._pinch_status}"
+        )
 
     def _publish(self, *, vel: float, 
                     turn: float, 
@@ -134,6 +163,14 @@ class GripperBotController(Node):
 
         self._vel_publisher.publish(vel_command)
         self._arm_publisher.publish(arm_command)
+
+    def destroy_node(self) ->  None:
+        if self._terminal_settings is not None:
+            import termios
+
+            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self._terminal_settings)
+            self._terminal_settings = None
+        super().destroy_node()
 
 def main(args=None):
     rclpy.init(args=args)
