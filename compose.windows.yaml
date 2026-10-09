@@ -1,0 +1,30 @@
+services:
+  # MARK: Development
+  # Windows uses VcXsrv on the host and software rendering in Docker Desktop.
+  tutorials:
+    build:
+      context: .
+      dockerfile: docker/tutorials.Dockerfile
+      args:
+        USERNAME: ${CONTAINER_USER:-stud}
+        USER_UID: ${LOCAL_UID:-1000}
+        USER_GID: ${LOCAL_GID:-1000}
+    image: heat-robotics:tutorials
+    container_name: heat-robotics-tutorials
+    hostname: heat-tutorials
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    stdin_open: true
+    tty: true
+    environment:
+      - ROS_DOMAIN_ID=0
+      - ROS_HOME=/tmp/ros
+      - T_REPO=/home/${CONTAINER_USER:-stud}/Mechatronics-Tutorials
+      - T_GB_WS=/home/${CONTAINER_USER:-stud}/Mechatronics-Tutorials/ros2-gripper-bot/gb_ws
+      - DISPLAY=${DISPLAY:-host.docker.internal:0.0}
+      - QT_QPA_PLATFORM=xcb
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - GALLIUM_DRIVER=llvmpipe
+    volumes:
+      - .:/home/${CONTAINER_USER:-stud}/Mechatronics-Tutorials:rw
+    command: bash
