@@ -1,0 +1,2 @@
+float64 joint1
+bool open_pincher
