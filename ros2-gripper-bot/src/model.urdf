@@ -1,0 +1,341 @@
+<?xml version="1.0"?>
+<robot name="my_robot">
+
+  <material name="grey">
+    <color rgba="0.6 0.6 0.6 1"/>
+  </material>
+
+  <material name="orange">
+    <color rgba="1 0.55 0.1 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0.25 0.65 0.35 1"/>
+  </material>
+
+  <material name="color_f98310">
+    <color rgba="0.976471 0.513725 0.062745 1"/>
+  </material>
+
+  <material name="color_47ee0e">
+    <color rgba="0.278431 0.933333 0.054902 1"/>
+  </material>
+
+  <material name="color_bd65bf">
+    <color rgba="0.741176 0.396078 0.74902 1"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.225 0.3 0.05"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+
+  <joint name="joint_2" type="continuous">
+    <parent link="base_link"/>
+    <child link="link_2"/>
+    <origin xyz="-0.0225 0.08 0.05" rpy="0 -1.5708 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="link_2">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.02"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+  <joint name="joint_3" type="fixed">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="0 0.0014 0.0139" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link_3">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.01 0.01"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="joint_4" type="continuous">
+    <parent link="base_link"/>
+    <child link="link_4"/>
+    <origin xyz="-0.0225 -0.08 0.05" rpy="0 -1.5708 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="link_4">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.02"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+  <joint name="joint_5" type="fixed">
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <origin xyz="0 0.0014 0.0139" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link_5">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.01 0.01"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="joint_6" type="continuous">
+    <parent link="base_link"/>
+    <child link="link_6"/>
+    <origin xyz="0.0225 -0.08 0.05" rpy="0 -1.5708 -3.1416"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="link_6">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.02"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+  <joint name="joint_7" type="fixed">
+    <parent link="link_6"/>
+    <child link="link_7"/>
+    <origin xyz="0 0.0014 0.0139" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link_7">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.01 0.01"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="joint_8" type="continuous">
+    <parent link="base_link"/>
+    <child link="link_8"/>
+    <origin xyz="0.0225 0.08 0.05" rpy="0 -1.5708 3.1416"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="link_8">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.02"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+  <joint name="joint_9" type="fixed">
+    <parent link="link_8"/>
+    <child link="link_9"/>
+    <origin xyz="0 0.0014 0.0139" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link_9">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.01 0.01"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="joint_10" type="fixed">
+    <parent link="base_link"/>
+    <child link="link_10"/>
+    <origin xyz="0 0 0.075" rpy="-0.3739 0 0"/>
+  </joint>
+
+  <link name="link_10">
+    <inertial>
+      <origin xyz="0 0 0.012636554" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.000297646" ixy="0" ixz="0" iyy="0.000297646" iyz="0" izz="0.000537695"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p1.stl" scale="0.75 0.75 0.75"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_11" type="revolute">
+    <parent link="link_10"/>
+    <child link="link_11"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.570796327" upper="1.570796327" effort="10" velocity="2"/>
+  </joint>
+
+  <link name="link_11">
+    <inertial>
+      <origin xyz="2.27e-7 0.004010783 0.080596905" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.000857851" ixy="5.1099e-9" ixz="3.79456e-9" iyy="0.000862913" iyz="-0.000090925" izz="0.000324887"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p2.stl" scale="0.75 0.75 0.75"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_12" type="revolute">
+    <parent link="link_11"/>
+    <child link="link_12"/>
+    <origin xyz="0.0001 -0.011 0.1432" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.570796327" upper="1.570796327" effort="10" velocity="2"/>
+  </joint>
+
+  <link name="link_12">
+    <inertial>
+      <origin xyz="0 -0.009375 0.06375" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.00116083" ixy="0" ixz="0" iyy="0.00126041" iyz="0" izz="0.000128873"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p3.stl" scale="0.75 0.75 0.75"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_13" type="fixed">
+    <parent link="link_12"/>
+    <child link="link_13"/>
+    <origin xyz="-0.0001 0.0039 0.1274" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link_13">
+    <inertial>
+      <origin xyz="0 -0.020550001 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.0000810037" ixy="0" ixz="0" iyy="0.0000202104" iyz="0" izz="0.0000810037"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p6.stl" scale="0.75 0.75 0.75"/>
+      </geometry>
+      <material name="color_f98310"/>
+    </visual>
+  </link>
+
+  <joint name="joint_14" type="fixed">
+    <parent link="link_13"/>
+    <child link="link_14"/>
+    <origin xyz="0.0224 -0.0487 -0.0253" rpy="0 0 -1.5708"/>
+  </joint>
+
+  <link name="link_14">
+    <inertial>
+      <origin xyz="-0.0008014 -0.002812956 0.048669385" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.000787538" ixy="-0.0000105752" ixz="-0.00000948456" iyy="0.00075363" iyz="-0.0000332907" izz="0.000165522"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p44.stl" scale="0.5 0.5 0.5"/>
+      </geometry>
+      <material name="color_47ee0e"/>
+    </visual>
+  </link>
+
+  <joint name="joint_15" type="fixed">
+    <parent link="link_14"/>
+    <child link="link_15"/>
+    <origin xyz="0 0 0.1482" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link_15">
+    <inertial>
+      <origin xyz="-2.18e-7 -0.00050454 0.008575293" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.0000580028" ixy="4.01823e-11" ixz="3.84602e-10" iyy="0.000065773" iyz="0.00000274147" izz="0.000070296"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p7.stl" scale="0.5 0.5 0.5"/>
+      </geometry>
+      <material name="color_bd65bf"/>
+    </visual>
+  </link>
+
+  <joint name="joint_17" type="revolute">
+    <parent link="link_15"/>
+    <child link="link_17"/>
+    <origin xyz="0.0212 -0.0019 0.017" rpy="0 0 -3.1416"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.570796327" upper="-0.174532925" effort="10" velocity="2"/>
+  </joint>
+
+  <link name="link_17">
+    <inertial>
+      <origin xyz="0.010701655 -0.00001342 0.027035755" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.000141538" ixy="1.59908e-8" ixz="-0.0000368439" iyy="0.000155079" iyz="1.50181e-7" izz="0.0000273631"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p8.stl" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_16" type="revolute">
+    <parent link="link_15"/>
+    <child link="link_16"/>
+    <origin xyz="-0.0211 -0.0019 0.017" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.570796327" upper="-0.174532925" effort="10" velocity="2"/>
+  </joint>
+
+  <link name="link_16">
+    <inertial>
+      <origin xyz="0.010701655 -0.00001342 0.027035755" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.000141538" ixy="1.59908e-8" ixz="-0.0000368439" iyy="0.000155079" iyz="1.50181e-7" izz="0.0000273631"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://model/meshes/p8.stl" scale="0.5 0.5 0.5"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>
