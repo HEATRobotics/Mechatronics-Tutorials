@@ -1,6 +1,7 @@
 #!/usr/bin/env_python3
 
 import sys
+import os
 import time 
 import select
 from typing import Optional
@@ -17,7 +18,7 @@ class GripperBotController(Node):
         self.declare_parameter("vel_step", 0.1)
         self.declare_parameter("rotate_step", 0.1)
         self.declare_parameter("actuate_step", 0.1)
-        self.declare_parameter("pinch_status", False)
+        self.declare_parameter("pinch_status", True)
         self.declare_parameter("poll_period", 0.01)
 
         self._vel_step     = float(self.get_parameter("vel_step").value)
@@ -32,7 +33,7 @@ class GripperBotController(Node):
 
         self._arm_join1 = 0.0
         self._arm_rotate = 0.0
-        #Pinch status open by default <- False
+        # True means open, matching GbArm.open_pincher and the helper default.
 
         self._vel_publisher = self.create_publisher(
             GbControl, "vel_cmd", 10
@@ -48,11 +49,12 @@ class GripperBotController(Node):
         self.get_logger().info(
             "Simulation teleoperation started: "
             "Car: W/S forward, A/D turn, "
-            "Arm: I/K actuate, J/L rotate, _ pinch"
-            "r reset, Q quit"
+            "Arm: I/K actuate, J/L rotate, Space toggle pincher, "
+            "R reset, Q quit"
         )
 
     def _configure_terminal(self) -> None:
+        self._terminal_settings = None
         if not sys.stdin.isatty():
             self.get_logger().warn(
                 "stdin is not a terminal; commands will be read as they become available"
@@ -86,7 +88,9 @@ class GripperBotController(Node):
         """
 
         while select.select([sys.stdin], [], [], 0.0)[0]:
-            key = sys.stdin.read(1).lower()
+            # Read directly from the fd so TextIO buffering cannot hide keys
+            # from the next select() call.
+            key = os.read(sys.stdin.fileno(), 1).decode().lower()
             if not key:
                 self._vel_forward = 0.0
                 self._vel_turn = 0.0
@@ -113,14 +117,15 @@ class GripperBotController(Node):
                 self._vel_forward = 0.0
                 self._vel_turn = 0.0
                 self._arm_rotate = 0.0
-                self._arm_rotate = 0.0
-                self._pinch_status = False
+                self._arm_join1 = 0.0
+                self._pinch_status = True
             elif key == "q":
                 self._vel_forward = 0.0
                 self._vel_turn = 0.0
                 self._arm_rotate = 0.0
-                self._arm_rotate = 0.0
-                self._pinch_status = False
+                self._arm_join1 = 0.0
+                self._pinch_status = True
+                self._publish_termi_command()
                 rclpy.shutdown()
                 return
             else:
