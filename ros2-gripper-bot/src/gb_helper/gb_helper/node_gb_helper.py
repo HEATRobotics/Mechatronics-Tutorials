@@ -49,21 +49,21 @@ class GripperBotHelper(Node):
         )
 
         self._arm_publishers = {
-            'arm_base_joint': self.create_publisher(
-                GbArm, 'arm_base_joint/command', 10
+            'X_X_joint': self.create_publisher(
+                GbArm, 'X_X_joint/command', 10
             ),
-            'arm_elbow_joint': self.create_publisher(
-                GbArm, 'arm_elbow_joint/command', 10
+            'X_X_joint': self.create_publisher(
+                GbArm, 'X_X_joint/command', 10
             ),
         }
 
-        # Subscribers
+        # TODO: Subscribers
         self._vel_subscriber = self.create_subscription(
-            GbControl, "vel_cmd", self._receive_velocity, 10
+            GbControl, "___", self._receive_velocity, 10
         )
 
         self._arm_subscription = self.create_subscription(
-            GbArm, "arm_cmd", self._receive_arm, 10
+            GbArm, "___", self._receive_arm, 10
         )
 
         self._timer = self.create_timer(period, self._publish_command)
@@ -123,7 +123,7 @@ class GripperBotHelper(Node):
         joints.name = [
             'front_left_wheel_joint', 'front_right_wheel_joint',
             'rear_left_wheel_joint', 'rear_right_wheel_joint',
-            'arm_base_joint', 'arm_elbow_joint',
+            'arm_base_joint', 'X_X_joint',
             'gripper_left_joint', 'gripper_right_joint',
         ]
         joints.position = [self._left_wheel, self._right_wheel] * 2 + [

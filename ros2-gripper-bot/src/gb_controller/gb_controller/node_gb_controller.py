@@ -162,9 +162,7 @@ class GripperBotController(Node):
         vel_command.forward = vel
         vel_command.turn = turn
         
-        arm_command.joint1 = actuate
-        arm_command.base_rotate = rotate
-        arm_command.open_pincher = pinch
+        #TODO: Implement Arm Commands
 
         self._vel_publisher.publish(vel_command)
         self._arm_publisher.publish(arm_command)

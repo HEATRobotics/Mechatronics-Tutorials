@@ -23,7 +23,7 @@ def generate_launch_description():
             parameters=[{'robot_description': description}], output='screen',
         ),
         Node(
-            package='gb_helper', executable='gb_help', output='screen',
+            package='gb_helper', executable='___', output='screen',
             condition=IfCondition(LaunchConfiguration('helper')),
         ),
         Node(
